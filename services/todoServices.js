@@ -8,10 +8,10 @@ export async function addTodo(data) {
   return Todos.create(data);
 }
 
-export async function removeTodo(id) {
-  return Todos.findByIdAndDelete(id);
+export async function removeTodo(_id) {
+  return Todos.findByIdAndDelete({ _id });
 }
 
-export async function refreshTodo(id, data) {
-  return Todos.findByIdAndUpdate(id, data, { new: true });
+export async function refreshTodo(_id, data) {
+  return Todos.findByIdAndUpdate({ _id }, data, { new: true });
 }

@@ -29,10 +29,10 @@ export const deleteTodo = async (req, res, next) => {
   try {
     const { id } = req.params;
     const result = removeTodo(id);
-    if (result === null) {
+    if (!result) {
       return res.status(404).json({ message: "Not found task" });
     }
-    res.status(200).json({ message: "Task deleted!" }).send(result);
+    res.status(200).send(result);
   } catch (error) {
     console.log(error);
     next(error);
@@ -43,10 +43,10 @@ export const updateTodo = async (req, res, next) => {
     const { id } = req.params;
     const { checked } = req.body;
     const resultUpdate = refreshTodo(id, { checked });
-    if (resultUpdate === null) {
+    if (!resultUpdate) {
       return res.status(404).json({ message: "Not found task" });
     }
-    res.status(200).json({ message: "Task updated!" }).send(resultUpdate);
+    res.status(200).send(resultUpdate);
   } catch (error) {
     console.log(error);
     next(error);
