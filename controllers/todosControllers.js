@@ -4,51 +4,49 @@ import {
   removeTodo,
   refreshTodo,
 } from "../services/todoServices.js";
-
-export const getAllTodo = async (req, res, next) => {
+export async function getAllTodo(req, res, next) {
   try {
     const todos = await listTodo();
     res.status(200).send(todos);
   } catch (error) {
-    console.log(error);
     next(error);
   }
-};
+}
 
-export const createTodo = async (req, res, next) => {
+export async function createTodo(req, res, next) {
   try {
     const newTodo = await addTodo({ ...req.body });
     res.status(201).send(newTodo);
   } catch (error) {
-    console.log(error);
     next(error);
   }
-};
+}
 
-export const deleteTodo = async (req, res, next) => {
+export async function deleteTodo(req, res, next) {
+  const { id } = req.params;
   try {
-    const { id } = req.params;
-    const result = removeTodo(id);
-    if (!result) {
-      return res.status(404).json({ message: "Not found task" });
+    const result = await removeTodo(id);
+    if (result === null) {
+      return res.status(404).json({ message: "Todo not found" });
     }
-    res.status(200).send(result);
+    res.send(result);
   } catch (error) {
-    console.log(error);
     next(error);
   }
-};
-export const updateTodo = async (req, res, next) => {
+}
+
+export async function updateTodo(req, res, next) {
+  const { id } = req.params;
+  const { text, checked } = req.body;
+
   try {
-    const { id } = req.params;
-    const { checked } = req.body;
-    const resultUpdate = refreshTodo(id, { checked });
-    if (!resultUpdate) {
-      return res.status(404).json({ message: "Not found task" });
+    const resultUpdate = await refreshTodo(id, { text, checked });
+
+    if (resultUpdate === null) {
+      return res.status(404).json({ message: "Todo not found" });
     }
-    res.status(200).send(resultUpdate);
+    res.send(resultUpdate);
   } catch (error) {
-    console.log(error);
     next(error);
   }
-};
+}

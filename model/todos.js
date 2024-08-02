@@ -11,7 +11,7 @@ const todosSchema = new Schema(
       default: false,
     },
   },
-  { versionKey: false }
+  { versionKey: false, timestamps: true }
 );
 
 export const Todos = model("todos", todosSchema);
